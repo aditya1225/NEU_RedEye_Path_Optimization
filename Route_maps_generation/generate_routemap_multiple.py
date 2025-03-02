@@ -3,7 +3,7 @@ import openrouteservice
 from config import API_KEY as key
 import random
 import pandas as pd
-from generate_latitude_longitude import get_coordinates
+from Route_maps_generation.generate_latitude_longitude import get_coordinates
 
 def route_generator(waypoints):
     '''
@@ -44,7 +44,7 @@ def route_generator(waypoints):
         print("Map saved as multi_stop_route_map.html.")
 
 # Below is sample code to test.
-df = pd.read_csv("../Locations Dataset/House_locations_dataset.csv")
+df = pd.read_csv("../Locations_dataset/House_locations_dataset.csv")
 
 num_stops = 3
 waypoints = []
