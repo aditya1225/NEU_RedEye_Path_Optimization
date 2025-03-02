@@ -12,6 +12,7 @@ def route_generator(start, end):
     route = None
     client = openrouteservice.Client(key=f'{key}')
 
+    print(f"Start: {start}, End: {end}")
 
     try:
         route = client.directions(
