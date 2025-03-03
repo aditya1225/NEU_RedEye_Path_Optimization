@@ -1,11 +1,12 @@
 import folium
 import openrouteservice
 from config import API_KEY as key
+import hill_climbing
 import random
 import pandas as pd
 from generate_latitude_longitude import get_coordinates
 
-def route_generator(waypoints):
+def route_generator(waypoints, optimize=False):
     '''
     This generates a routemap for multiple stops.
     :param waypoints: a list of waypoints.
@@ -46,13 +47,12 @@ def route_generator(waypoints):
 # Below is sample code to test.
 df = pd.read_csv("../Locations Dataset/House_locations_dataset.csv")
 
-num_stops = 3
+num_stops = 7
 waypoints = []
 
 for _ in range(num_stops):
     random_index = random.randint(0, len(df) - 1)
     random_name = df.iloc[random_index, 0]
     waypoints.append(get_coordinates(random_name))
-
-
+waypoints = hill_climbing.hillClimbing(waypoints)
 route_generator(waypoints)
