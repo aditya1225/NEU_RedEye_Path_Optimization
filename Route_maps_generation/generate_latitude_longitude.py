@@ -1,15 +1,12 @@
-import openrouteservice
-from config import API_KEY as key
+import pandas as pd
 
 def get_coordinates(address):
-    client = openrouteservice.Client(key= f'{key}')
-    address = address + " Boston, MA"
-    geocode = client.pelias_search(text=address)
+    df = pd.read_csv("../Locations_dataset/House_locations_dataset_with_coordinates.csv", header=None)
+    origin_index = 0
+    for i in range(df.shape[0] + 1):
+        if df.iloc[i][0] == address:
+            origin_index = i
+            break
+    origin_coords = (df.iloc[origin_index][1], df.iloc[origin_index][2])
 
-    if geocode and "features" in geocode and len(geocode["features"]) > 0:
-        coords = geocode["features"][0]["geometry"]["coordinates"]
-
-    if coords:
-        return (coords[0], coords[1])
-    else:
-        return (None, None)
+    return origin_coords
