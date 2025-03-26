@@ -1,12 +1,11 @@
 import folium
 import openrouteservice
 from config import API_KEY as key
-import Local_search.hill_climbing
 import random
 import pandas as pd
-from generate_latitude_longitude import get_coordinates
+from Route_maps_generation.generate_latitude_longitude import get_coordinates
 
-def route_generator(waypoints, optimize=False):
+def route_generator(waypoints, algorithm_name):
     '''
     This generates a routemap for multiple stops.
     :param waypoints: a list of waypoints.
@@ -14,11 +13,17 @@ def route_generator(waypoints, optimize=False):
     '''
     client = openrouteservice.Client(key=key)
 
+    if isinstance(waypoints[0], str):
+        temp =[]
+        for i in range(len(waypoints)):
+            temp.append(get_coordinates(waypoints[i]))
+        waypoints = temp
+
     print(f"Waypoints: {waypoints}")
 
     try:
         route = client.directions(
-            coordinates=waypoints,  # Multiple stops
+            coordinates=waypoints,
             profile='driving-car',
             format='geojson'
         )
@@ -41,18 +46,19 @@ def route_generator(waypoints, optimize=False):
 
         folium.PolyLine(route_coords, color="blue", weight=5, opacity=0.7).add_to(m)
 
-        m.save("multi_stop_route_map.html")
+        m.save(f"{algorithm_name}.html")
         print("Map saved as multi_stop_route_map.html.")
 
 # Below is sample code to test.
-df = pd.read_csv("../Locations Dataset/House_locations_dataset.csv")
-
-num_stops = 7
-waypoints = []
-
-for _ in range(num_stops):
-    random_index = random.randint(0, len(df) - 1)
-    random_name = df.iloc[random_index, 0]
-    waypoints.append(get_coordinates(random_name))
-waypoints = Local_search.hillClimbing(waypoints)
-route_generator(waypoints)
+# df = pd.read_csv("../Locations_dataset/House_locations_dataset.csv")
+#
+# num_stops = 3
+# waypoints = []
+#
+# for _ in range(num_stops):
+#     random_index = random.randint(0, len(df) - 1)
+#     random_name = df.iloc[random_index, 0]
+#     waypoints.append(get_coordinates(random_name))
+#
+#
+# route_generator(waypoints)
