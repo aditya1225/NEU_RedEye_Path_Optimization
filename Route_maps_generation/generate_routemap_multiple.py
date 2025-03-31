@@ -5,6 +5,7 @@ from folium.plugins import AntPath
 import random
 import pandas as pd
 from Route_maps_generation.generate_latitude_longitude import get_coordinates
+from pathlib import Path
 
 def route_generator(waypoints, algorithm_name):
     '''
@@ -56,7 +57,9 @@ def route_generator(waypoints, algorithm_name):
         ).add_to(m)
 
         # Save map to an HTML file
-        m.save(f"../Route_maps/{algorithm_name}_routemap.html")
+        output_file = Path(__file__).parent / f"../Route_maps/{algorithm_name}_routemap.html"
+        m.save(output_file)
+        # m.save(f"../Route_maps/{algorithm_name}_routemap.html")
         #m.save(f"{algorithm_name}.html")
         print(f"Map saved as {algorithm_name}.html.")
 

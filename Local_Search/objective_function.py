@@ -1,6 +1,7 @@
 import openrouteservice
 import time
 import numpy as np
+from pathlib import Path
 
 
 def objective(waypoints, api_key):
@@ -9,7 +10,8 @@ def objective(waypoints, api_key):
     If a distance between a source and destination pair is not cached, an API call is made.
     Note: Distance from A to B might differ from B to A.
     """
-    file_path = "../Locations_dataset/pre_stored_distances.npy"
+    # file_path = "../Locations_dataset/pre_stored_distances.npy"
+    file_path = Path(__file__).parent / "../Locations_dataset/pre_stored_distances.npy"
 
     # Define a structured dtype for our data.
     dtype = np.dtype([
