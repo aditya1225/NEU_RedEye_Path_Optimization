@@ -3,10 +3,14 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 from pathlib import Path
 import json
+from pathlib import Path
 
 
 def return_clusters(number_of_clusters):
-    with open('../locations.json', 'r') as f:
+
+    # with open('../locations.json', 'r') as f:
+    path = Path(__file__).parent / "../locations.json"
+    with path.open("r") as f:
         locations = json.load(f)
 
     X = np.array(locations)

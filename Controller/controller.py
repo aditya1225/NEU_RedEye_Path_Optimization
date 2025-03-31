@@ -146,4 +146,4 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
     return [Total_route_length, Total_commute_time]
 
 if __name__ == "__main__":
-    startup(number_of_locations=25, number_of_vans=3)
+    startup(number_of_locations=10, number_of_vans=3)
