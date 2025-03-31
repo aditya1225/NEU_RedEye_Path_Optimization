@@ -1,6 +1,8 @@
 import folium
+import os
 import openrouteservice
 from config import API_KEY as key
+from folium.plugins import AntPath
 import random
 import pandas as pd
 from Route_maps_generation.generate_latitude_longitude import get_coordinates
@@ -35,19 +37,30 @@ def route_generator(waypoints, algorithm_name):
     if route is not None:
         route_coords = [(coord[1], coord[0]) for coord in route['features'][0]['geometry']['coordinates']]
 
+        # Create a folium map centered at the first waypoint
         m = folium.Map(location=[waypoints[0][1], waypoints[0][0]], zoom_start=14)
 
+        # Add markers for waypoints
         for i, (lon, lat) in enumerate(waypoints):
             folium.Marker(
                 location=[lat, lon],
-                popup=f"Stop {i+1}",
-                icon=folium.Icon(color="blue" if i not in [0, len(waypoints)-1] else "green" if i == 0 else "red")
+                popup=f"Stop {i + 1}",
+                icon=folium.Icon(color="blue" if i not in [0, len(waypoints) - 1] else "green" if i == 0 else "red")
             ).add_to(m)
 
-        folium.PolyLine(route_coords, color="blue", weight=5, opacity=0.7).add_to(m)
+        # Add animated AntPath for directionality
+        AntPath(
+            locations=route_coords,
+            color="blue",
+            weight=5,
+            delay=400
+        ).add_to(m)
 
-        m.save(f"{algorithm_name}.html")
-        print("Map saved as multi_stop_route_map.html.")
+        # Save map to an HTML file
+        controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Route_maps'))
+        m.save(os.path.join(controller_path, f"{algorithm_name}_routemap.html"))
+        #m.save(f"{algorithm_name}.html")
+        print(f"Map saved as {algorithm_name}.html.")
 
 # Below is sample code to test.
 # df = pd.read_csv("../Locations_dataset/House_locations_dataset.csv")
