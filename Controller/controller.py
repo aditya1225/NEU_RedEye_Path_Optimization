@@ -9,6 +9,7 @@ from Local_Search.genetic_algorithm import GeneticTSP
 from Route_maps_generation.generate_routemap_multiple import route_generator
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from config import API_KEY_3 as key
+from pathlib import Path
 import re
 import os
 import json
@@ -17,14 +18,8 @@ def startup(number_of_locations, number_of_vans):
     get_points(number_of_locations)
     return_clusters(number_of_vans)
 
-
     pattern = re.compile(r"locations_\d+\.json")
-
-
     controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')    )
-
-
-
     location_files = [
         filename for filename in os.listdir(controller_path)
         if pattern.match(filename)
@@ -34,7 +29,9 @@ def startup(number_of_locations, number_of_vans):
         waypoints=[]
         waypoints.clear()
         waypoints.append([-71.08811, 42.33862])
-        with open(f"../locations_{i}.json", "r") as file:
+        # with open(f"../locations_{i}.json", "r") as file:
+        file_path = Path(__file__).parent / f"../locations_{i}.json"
+        with file_path.open("r") as file:
             waypoints.extend(json.load(file))
         waypoints.append([-71.08811, 42.33862])
 
@@ -66,7 +63,9 @@ def hill_climbing_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    with open(f"../Route_orders/hill_climbing_{van_number}", "w") as file:
+    # with open(f"../Route_orders/hill_climbing_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/hill_climbing_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Hill Climbing-{van_number}')
@@ -87,7 +86,9 @@ def simulated_annealing_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    with open(f"../Route_orders/simulated_annealing_{van_number}", "w") as file:
+    # with open(f"../Route_orders/simulated_annealing_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/simulated_annealing_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Simulated Annealing-{van_number}')
@@ -107,7 +108,9 @@ def local_beam_search_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    with open(f"../Route_orders/local_beam_search_{van_number}", "w") as file:
+    # with open(f"../Route_orders/local_beam_search_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/local_beam_search_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Local Beam Search-{van_number}')
@@ -131,7 +134,9 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    with open(f"../Route_orders/genetic_algorithm_{van_number}", "w") as file:
+    # with open(f"../Route_orders/genetic_algorithm_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/genetic_algorithm_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Genetic Algorithm-{van_number}')
@@ -141,4 +146,4 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
     return [Total_route_length, Total_commute_time]
 
 if __name__ == "__main__":
-    startup(number_of_locations=59, number_of_vans=3)
+    startup(number_of_locations=25, number_of_vans=3)
