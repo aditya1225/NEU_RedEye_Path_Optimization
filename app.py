@@ -8,6 +8,16 @@ app = Flask(__name__)
 def generate_maps():
     num_vans = int(request.form['num_vans'])
     num_students = int(request.form['num_students'])
+    route_maps_path = os.path.join('Route_maps')
+    for filename in os.listdir(route_maps_path):
+        file_path = os.path.join(route_maps_path, filename)
+        try:
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            print(f"Error deleting file {file_path}: {e}")
+
+    # Call the startup function
     maps = startup(number_of_locations=num_students, number_of_vans=num_vans)
     return redirect('/')
 
