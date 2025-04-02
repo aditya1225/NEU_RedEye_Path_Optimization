@@ -1,8 +1,9 @@
 import os
-from flask import Flask, jsonify, redirect, render_template, request, send_from_directory
+from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, session
 from Controller.controller import startup
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 @app.route('/generate_maps', methods=['POST'])
 def generate_maps():
@@ -17,8 +18,9 @@ def generate_maps():
         except Exception as e:
             print(f"Error deleting file {file_path}: {e}")
 
-    # Call the startup function
-    maps = startup(number_of_locations=num_students, number_of_vans=num_vans)
+    # Call the startup function and get metrics
+    metrics = startup(number_of_locations=num_students, number_of_vans=num_vans)
+    session['metrics'] = metrics  # Store metrics in session
     return redirect('/')
 
 @app.route('/Route_maps/<path:filename>')
@@ -28,7 +30,8 @@ def send_map(filename):
 @app.route('/')
 def hello_world():
     map_files = os.listdir(os.path.join('Route_maps'))
-    return render_template('maps_display.html', map_files=map_files)
+    metrics = session.get('metrics', {})
+    return render_template('maps_display.html', map_files=map_files, metrics=metrics)
 
 if __name__ == '__main__':
     app.run()

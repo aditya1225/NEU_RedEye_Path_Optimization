@@ -115,18 +115,12 @@
             color: var(--secondary-color);
         }
         
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
+        iframe {
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
         }
         
         @media (max-width: 768px) {
@@ -160,14 +154,19 @@
         <button type="submit">Book Cab</button>
     </form>
     
-    
     <h2>Available Maps:</h2>
     <ul>
         {% for map_file in map_files %}
             {% set parts = map_file.split('-') %}
             <li>
                 <strong>{{ parts[0] }} - Van {{ parts[1].split('_')[0] }}</strong>
-                <a href="/Route_maps/{{ map_file }}">View Route Map</a>
+                <iframe src="/Route_maps/{{ map_file }}" title="Route Map"></iframe>
+                {% if metrics[parts[0] + '-' + parts[1].split('_')[0]] %}
+                    <p>Total Route Length: {{ metrics[parts[0] + '-' + parts[1].split('_')[0]].distance }} miles</p>
+                    <p>Total Commute Time: {{ metrics[parts[0] + '-' + parts[1].split('_')[0]].time }} minutes</p>
+                {% else %}
+                    <p>Metrics not available for this route.</p>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
