@@ -55,8 +55,3 @@ def return_clusters(number_of_clusters):
     for key in res.keys():
         with open(f"../locations_{key}.json", 'w') as f:
             json.dump(res[key], f, default=lambda x: x.tolist())
-
-
-
-if __name__ == "__main__":
-    return_clusters( 3)

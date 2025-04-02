@@ -14,6 +14,40 @@ import os
 import json
 
 def startup(number_of_locations, number_of_vans):
+    pattern = re.compile(r"locations_\d+\.json")
+    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    for filename in os.listdir(controller_path):
+        if pattern.match(filename):
+            os.remove(os.path.join(controller_path, filename))
+
+    get_points(number_of_locations)
+    return_clusters(number_of_vans)
+    location_files = [f"locations_{i}.json" for i in range(number_of_vans)]
+
+    for i in range(len(location_files)):
+        waypoints = []
+        waypoints.clear()
+        waypoints.append([-71.08811, 42.33862])
+        with open(f"../{location_files[i]}", "r") as file:
+            waypoints.extend(json.load(file))
+        waypoints.append([-71.08811, 42.33862])
+
+        hill_climbing_distance, hill_climbing_time = hill_climbing_order(waypoints, 100, i)
+        print(f'Best distance by hill climbing for Van{i}- {hill_climbing_distance} miles')
+        print(f'Best time by hill climbing for Van{i}- {hill_climbing_time} minutes')
+
+        simulated_annealing_distance, simulated_annealing_time = simulated_annealing_order(waypoints, 100, i)
+        print(f'Best distance by simulated annealing for Van{i}- {simulated_annealing_distance} miles')
+        print(f'Best time by simulated annealing for Van{i}- {simulated_annealing_time} minutes')
+
+        local_beam_distance, local_beam_time = local_beam_search_order(waypoints, 100, i)
+        print(f'Best distance by local beam search for Van{i}- {local_beam_distance} miles')
+        print(f'Best time by local beam search for Van{i}- {local_beam_time} minutes')
+
+        genetic_algorithm_distance, genetic_algorithm_time = genetic_algorithm_order(waypoints, 100, i)
+        print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
+        print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
     get_points(number_of_locations)
     return_clusters(number_of_vans)
 
