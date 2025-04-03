@@ -1,10 +1,12 @@
 import random
 import json
 import time
+from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
+from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
+from config import API_KEY_3 as key
 from Route_maps_generation.generate_routemap_multiple import route_generator
-from objective_function import objective
+from Local_Search.objective_function import objective
 from K_means.k_means_clustering import return_clusters
-
 
 def generate_neighbors(solution):
     """Generate all possible neighbors by swapping middle points"""
@@ -21,32 +23,34 @@ def generate_neighbors(solution):
 
 
 def local_beam_search(waypoints, k=5, max_iterations=20):
-    """Local Beam Search implementation with fixed start/end points"""
+    """
+    Local Beam Search for TSP: finds a tour visiting all waypoints.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param k: Number of beams (solutions) to maintain
+    :param max_iterations: Maximum number of iterations to prevent infinite loops
+    :return: List of waypoints visiting all points
+    """
     # Initialize beam with k copies of initial solution
     beam = [waypoints.copy() for _ in range(k)]
     best_solution = waypoints.copy()
-    time.sleep(2)
-    best_distance = objective(best_solution)
+    best_distance = objective(best_solution, key)
 
     available_indices = list(range(1, len(waypoints) - 1))
 
     for _ in range(max_iterations):
-        print("Iteration: ", _)
-        time.sleep(2)  # Respect API rate limits
+        #print("Iteration: ", _)
         all_neighbors = []
 
-        # Generate neighbors for each candidate in the beam
         for candidate in beam:
-            # Generate multiple neighbors per candidate
-            for _ in range(3):  # Generate 3 neighbors per candidate
+            for _ in range(3):
                 neighbor = candidate.copy()
                 i, j = random.sample(available_indices, 2)
                 neighbor[i], neighbor[j] = neighbor[j], neighbor[i]
                 all_neighbors.append(neighbor)
 
         # Evaluate all neighbors
-        time.sleep(2)
-        evaluated = [(neighbor, objective(neighbor)) for neighbor in all_neighbors]
+
+        evaluated = [(neighbor, objective(neighbor, key)) for neighbor in all_neighbors]
 
         # Sort neighbors by distance
         sorted_neighbors = sorted(evaluated, key=lambda x: x[1])
@@ -63,23 +67,24 @@ def local_beam_search(waypoints, k=5, max_iterations=20):
     return best_solution
 
 
-if __name__ == "__main__":
-    # Load waypoints (ensure first and last are Snell Library)
-    with open("../waypoints.json", "r") as file:
-        waypoints = json.load(file)
+# if __name__ == "__main__":
+#     # Load waypoints (ensure first and last are Snell Library)
+#     with open("../locations_0.json", "r") as file:
+#         waypoints = json.load(file)
+#
+#     temp = []
+#     temp.append([-71.08811, 42.33862])
+#     temp.extend(waypoints)
+#     temp.append([-71.08811, 42.33862])
+#     best_order = local_beam_search(
+#         waypoints=temp,
+#         k=5,
+#         max_iterations=100
+#     )
+#     route_generator(best_order, f'Local Beam Search')
+#     for coord in best_order:
+#         print(get_address_from_lat_long(coord))
+#     print(f"Best distance : {objective(best_order, key)} miles")
+#     print(f"Total commute time: {get_commute_time_for_multiple_points(best_order)} ")
 
-    map = return_clusters(waypoints, 3)
-    i=0
-    for key in map.keys():
-        temp = []
-        temp.append([-71.08811, 42.33862])
-        temp.extend(waypoints)
-        temp.append([-71.08811, 42.33862])
-        assert temp[0] == temp[-1], "Start and end points must be the same"
-        best_order = local_beam_search(
-            waypoints=temp,
-            k=5,
-            max_iterations=20
-        )
-        route_generator(best_order, f'Local Beam Search-{i}')
-        i+=1
+

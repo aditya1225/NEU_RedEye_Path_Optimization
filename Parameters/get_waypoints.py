@@ -6,7 +6,7 @@ import json
 df = pd.read_csv("../Locations_dataset/House_locations_dataset_with_coordinates.csv", header=None)
 waypoints = []
 waypoints.append(get_coordinates('Snell Library, Northeastern University'))
-numbers = random.sample(range(61), 35)
+numbers = random.sample(range(60), 35)
 for num in numbers:
     waypoints.append((df.iloc[num][1], df.iloc[num][2]))
 waypoints.append(get_coordinates('Snell Library, Northeastern University'))
