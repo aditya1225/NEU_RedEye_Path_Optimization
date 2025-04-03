@@ -1,14 +1,12 @@
 import random
 import json
 import time
-
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from config import API_KEY_3 as key
 from Route_maps_generation.generate_routemap_multiple import route_generator
 from Local_Search.objective_function import objective
 from K_means.k_means_clustering import return_clusters
-
 
 def generate_neighbors(solution):
     """Generate all possible neighbors by swapping middle points"""
@@ -25,7 +23,13 @@ def generate_neighbors(solution):
 
 
 def local_beam_search(waypoints, k=5, max_iterations=20):
-    """Local Beam Search implementation with fixed start/end points"""
+    """
+    Local Beam Search for TSP: finds a tour visiting all waypoints.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param k: Number of beams (solutions) to maintain
+    :param max_iterations: Maximum number of iterations to prevent infinite loops
+    :return: List of waypoints visiting all points
+    """
     # Initialize beam with k copies of initial solution
     beam = [waypoints.copy() for _ in range(k)]
     best_solution = waypoints.copy()

@@ -7,6 +7,13 @@ from pathlib import Path
 
 
 def return_clusters(number_of_clusters):
+    """
+    Reads a JSON file containing coordinates of locations, performs
+    KMeans clustering to divide the locations into specified number of
+    clusters, and saves each cluster's locations into separate JSON files.
+    :param number_of_clusters: Number of clusters to divide the locations into
+    :return: None
+    """
 
     # with open('../locations.json', 'r') as f:
     path = Path(__file__).parent / "../locations.json"
@@ -63,5 +70,5 @@ def return_clusters(number_of_clusters):
         with output_path.open("w") as f:
             json.dump(res[key], f, default=lambda x: x.tolist())
 
-if __name__ == "__main__":
-    return_clusters(3)
+# if __name__ == "__main__":
+#     return_clusters(3)

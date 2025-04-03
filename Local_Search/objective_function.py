@@ -3,12 +3,14 @@ import time
 import numpy as np
 from pathlib import Path
 
-
 def objective(waypoints, api_key):
     """
     Calculate the total distance of a route using cached distances stored in a NumPy file.
     If a distance between a source and destination pair is not cached, an API call is made.
     Note: Distance from A to B might differ from B to A.
+    :param waypoints: List of tuples (latitude, longitude) representing the route.
+    :param api_key: API key for the OpenRouteService.
+    :return: Total distance in miles.
     """
     # file_path = "../Locations_dataset/pre_stored_distances.npy"
     file_path = Path(__file__).parent / "../Locations_dataset/pre_stored_distances.npy"
@@ -64,5 +66,3 @@ def objective(waypoints, api_key):
 
     distance_miles = total_distance / 1609.34
     return distance_miles
-
-
