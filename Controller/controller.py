@@ -16,6 +16,12 @@ import os
 import json
 
 def startup(number_of_locations, number_of_vans):
+    """
+    Main function to initialize the routing process.
+    Generates random points, clusters them, and computes routes using various algorithms.
+    :param number_of_locations: Number of locations to generate
+    :param number_of_vans: Number of vans for clustering
+    """
     get_points(number_of_locations)
     return_clusters(number_of_vans)
 
@@ -36,21 +42,21 @@ def startup(number_of_locations, number_of_vans):
             waypoints.extend(json.load(file))
         waypoints.append([-71.08811, 42.33862])
 
-        # hill_climbing_distance, hill_climbing_time = hill_climbing_order(waypoints, 100, i)
-        # print(f'Best distance by hil climbing for Van{i}- {hill_climbing_distance} miles')
-        # print(f'Best time by hil climbing for Van{i}- {hill_climbing_time} minutes')
+        hill_climbing_distance, hill_climbing_time = hill_climbing_order(waypoints, 100, i)
+        print(f'Best distance by hil climbing for Van{i}- {hill_climbing_distance} miles')
+        print(f'Best time by hil climbing for Van{i}- {hill_climbing_time} minutes')
 
-        # simulated_annealing_distance, simulated_annealing_time = simulated_annealing_order(waypoints, 100, i)
-        # print(f'Best distance by simulated annealing for Van{i}- {simulated_annealing_distance} miles')
-        # print(f'Best time by simulated annealing for Van{i}- {simulated_annealing_time} minutes')
+        simulated_annealing_distance, simulated_annealing_time = simulated_annealing_order(waypoints, 100, i)
+        print(f'Best distance by simulated annealing for Van{i}- {simulated_annealing_distance} miles')
+        print(f'Best time by simulated annealing for Van{i}- {simulated_annealing_time} minutes')
 
-        # local_beam_distance, local_beam_time = local_beam_search_order(waypoints, 100, i)
-        # print(f'Best distance by local beam search for Van{i}- {local_beam_distance} miles')
-        # print(f'Best time by local beam search for Van{i}- {local_beam_time} minutes')
+        local_beam_distance, local_beam_time = local_beam_search_order(waypoints, 100, i)
+        print(f'Best distance by local beam search for Van{i}- {local_beam_distance} miles')
+        print(f'Best time by local beam search for Van{i}- {local_beam_time} minutes')
 
-        # genetic_algorithm_distance, genetic_algorithm_time = genetic_algorithm_order(waypoints, 100, i)
-        # print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
-        # print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
+        genetic_algorithm_distance, genetic_algorithm_time = genetic_algorithm_order(waypoints, 100, i)
+        print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
+        print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
 
         a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)  # New A* implementation
         print(f'Best distance by A* search for Van{i}- {a_star_distance} miles')
