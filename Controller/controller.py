@@ -1,20 +1,22 @@
-from Local_search.objective_function import objective
+from Local_Search.objective_function import objective
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Random_data_generation.get_random_points import get_points
 from K_means.k_means_clustering import return_clusters
-from Local_search.hill_climbing import hillClimbing
-from Local_search.simulated_annealing import simulated_annealing
-from Local_search.local_beam_search import local_beam_search
-from Local_search.genetic_algorithm import GeneticTSP
+from Local_Search.hill_climbing import hillClimbing
+from Local_Search.simulated_annealing import simulated_annealing
+from Local_Search.local_beam_search import local_beam_search
+from Local_Search.genetic_algorithm import GeneticTSP
+from Local_Search.a_star import a_star_search
 from Route_maps_generation.generate_routemap_multiple import route_generator
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
-from config import Sai_Api_Key as key
+from config import API_KEY_3 as key
+from pathlib import Path
 import re
 import os
 import json
 
 def startup(number_of_locations, number_of_vans):
-    metrics = {}  
+    metrics = {}
     pattern = re.compile(r"locations_\d+\.json")
     controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -66,7 +68,15 @@ def startup(number_of_locations, number_of_vans):
         print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
         print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
 
-    return metrics  
+        a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)  # New A* implementation
+        print(f'Best distance by A* search for Van{i}- {a_star_distance} miles')
+        print(f'Best time by A* search for Van{i}- {a_star_time} minutes')
+        metrics[f'A Search-{i}'] = {
+            'distance': a_star_distance,
+            'time': a_star_time
+        }
+
+    return metrics
 
 def hill_climbing_order(waypoints, max_iterations, van_number):
     best_order = hillClimbing(
@@ -78,8 +88,9 @@ def hill_climbing_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Route_orders'))
-    with open(os.path.join(controller_path, f"hill_climbing_{van_number}"), "w") as file:
+    # with open(f"../Route_orders/hill_climbing_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/hill_climbing_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Hill Climbing-{van_number}')
@@ -100,8 +111,9 @@ def simulated_annealing_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Route_orders'))
-    with open(os.path.join(controller_path, f"simulated_annealing_{van_number}"), "w") as file:
+    # with open(f"../Route_orders/simulated_annealing_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/simulated_annealing_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Simulated Annealing-{van_number}')
@@ -121,8 +133,9 @@ def local_beam_search_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Route_orders'))
-    with open(os.path.join(controller_path, f"local_beam_search_{van_number}"), "w") as file:
+    # with open(f"../Route_orders/local_beam_search_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/local_beam_search_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Local Beam Search-{van_number}')
@@ -130,6 +143,7 @@ def local_beam_search_order(waypoints, max_iterations, van_number):
     Total_route_length = objective(best_order, key)
     Total_commute_time = get_commute_time_for_multiple_points(best_order)
     return [Total_route_length, Total_commute_time]
+
 
 def genetic_algorithm_order(waypoints, max_iterations, van_number):
     ga = GeneticTSP(
@@ -145,8 +159,9 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
     for coords in best_order:
         best_order_address.append(get_address_from_lat_long(coords))
 
-    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Route_orders'))
-    with open(os.path.join(controller_path, f"genetic_algorithm_{van_number}"), "w") as file:
+    # with open(f"../Route_orders/genetic_algorithm_{van_number}", "w") as file:
+    output_path = Path(__file__).parent / f"../Route_orders/genetic_algorithm_{van_number}"
+    with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
     route_generator(best_order, f'Genetic Algorithm-{van_number}')
@@ -155,5 +170,25 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
     Total_commute_time = get_commute_time_for_multiple_points(best_order)
     return [Total_route_length, Total_commute_time]
 
+def a_star_order(waypoints, max_iterations, van_number):
+    best_order = a_star_search(
+        waypoints=waypoints,
+        max_iterations=max_iterations
+    )
+
+    best_order_address = []
+    for coords in best_order:
+        best_order_address.append(get_address_from_lat_long(coords))
+
+    output_path = Path(__file__).parent / f"../Route_orders/a_star_{van_number}"
+    with output_path.open("w") as file:
+        json.dump(best_order_address, file)
+
+    route_generator(best_order, f'A Search-{van_number}')
+
+    Total_route_length = objective(best_order, key)
+    Total_commute_time = get_commute_time_for_multiple_points(best_order)
+    return [Total_route_length, Total_commute_time]
+
 if __name__ == "__main__":
-    startup(number_of_locations=15, number_of_vans=3)
+    startup(number_of_locations=3, number_of_vans=1)

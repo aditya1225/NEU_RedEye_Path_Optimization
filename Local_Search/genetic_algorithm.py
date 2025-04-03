@@ -3,7 +3,7 @@ from Parameters.get_commute_time_without_traffic import get_commute_time_for_mul
 from config import Sai_Api_Key as key
 from Route_maps_generation.generate_routemap_multiple import route_generator
 import json
-from Local_search.objective_function import objective
+from Local_Search.objective_function import objective
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 
 class GeneticTSP:

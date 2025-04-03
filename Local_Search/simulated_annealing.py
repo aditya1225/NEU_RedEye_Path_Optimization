@@ -6,7 +6,7 @@ import json
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Route_maps_generation.generate_routemap_multiple import route_generator
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
-from Local_search.objective_function import objective
+from Local_Search.objective_function import objective
 from config import Sai_Api_Key as key
 
 def simulated_annealing(locations_0,

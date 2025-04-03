@@ -6,7 +6,7 @@ from Parameters.get_commute_time_without_traffic import get_commute_time_for_mul
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from config import API_KEY_3 as key
 from Route_maps_generation.generate_routemap_multiple import route_generator
-from Local_search.objective_function import objective
+from Local_Search.objective_function import objective
 from K_means.k_means_clustering import return_clusters
 
 

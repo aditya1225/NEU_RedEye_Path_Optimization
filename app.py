@@ -17,8 +17,6 @@ def generate_maps():
                 os.remove(file_path)
         except Exception as e:
             print(f"Error deleting file {file_path}: {e}")
-
-
     metrics = startup(number_of_locations=num_students, number_of_vans=num_vans)
     session['metrics'] = metrics
     return redirect('/')
