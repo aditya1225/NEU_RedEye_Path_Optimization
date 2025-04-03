@@ -77,7 +77,6 @@ def simulated_annealing(locations_0,
 
     return best_solution
 
-
 # if __name__ == "__main__":
 #
 #     dataset_path = "../Locations_dataset/House_locations_dataset_with_coordinates.csv"

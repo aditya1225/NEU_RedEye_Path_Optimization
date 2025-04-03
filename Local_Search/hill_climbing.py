@@ -7,11 +7,13 @@ from Route_maps_generation.generate_routemap_multiple import route_generator
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 
-
-
-
-
 def hillClimbing(waypoints, max_iterations=100):
+    """
+    Hill Climbing algorithm for TSP: finds a tour visiting all waypoints.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param max_iterations: Maximum number of iterations to prevent infinite loops
+    :return: List of waypoints visiting all points
+    """
     best = waypoints.copy()
     min_dist = objective(best, key)
     iterations_without_improvement = 0
@@ -36,7 +38,6 @@ def hillClimbing(waypoints, max_iterations=100):
         if iterations_without_improvement >= 10:
             break
     return best
-
 
 # if __name__ == "__main__":
 #     dataset_path = "../Locations_dataset/House_locations_dataset_with_coordinates.csv"
