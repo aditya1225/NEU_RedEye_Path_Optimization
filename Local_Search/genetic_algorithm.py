@@ -1,7 +1,6 @@
 import random
-
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
-from config import API_KEY_4 as key
+from config import Sai_Api_Key as key
 from Route_maps_generation.generate_routemap_multiple import route_generator
 import json
 from Local_Search.objective_function import objective
@@ -46,17 +45,17 @@ class GeneticTSP:
 
     def crossover(self, parent1, parent2):
         """Ordered Crossover (OX) for middle section"""
+        if len(parent1) < 3:
+            return parent1[:]
+
         start, end = sorted(random.sample(range(1, len(parent1) - 2), 2))
         child = [None] * len(parent1)
 
-        # Keep fixed points
         child[0] = parent1[0]
         child[-1] = parent1[-1]
 
-        # Copy segment from parent1
         child[start:end + 1] = parent1[start:end + 1]
 
-        # Fill remaining from parent2
         remaining = [gene for gene in parent2[1:-1] if gene not in child]
         ptr = 1
         for i in range(1, len(child) - 1):
@@ -106,28 +105,3 @@ class GeneticTSP:
 
         return best_individual
 
-
-# if __name__ == "__main__":
-#     # Load waypoints (ensure first and last are Snell Library)
-#     waypoints = [[-71.08811, 42.33862]]
-#     with open("../locations_0.json", "r") as file:
-#         waypoints.extend(json.load(file))
-#
-#     waypoints.append([-71.08811, 42.33862])
-#
-#     # Initialize and run genetic algorithm
-#     ga = GeneticTSP(
-#         waypoints,
-#         pop_size=30,
-#         elite_size=5,
-#         mutation_rate=0.01
-#     )
-#
-#     best_order = ga.run(generations=10)
-#
-#     print("\nBest order found by Genetic Algorithm:")
-#     route_generator(best_order, 'Genetic Algorithm')
-#     for coord in best_order:
-#         print(get_address_from_lat_long(coord))
-#     print(f"Best distance : {objective(best_order, key)} miles")
-#     print(f"Total commute time: {get_commute_time_for_multiple_points(best_order)} minutes")

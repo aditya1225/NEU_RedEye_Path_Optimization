@@ -1,6 +1,5 @@
 import pandas as pd
 from pathlib import Path
-
 def get_address_from_lat_long(lat_long):
     path = Path(__file__).parent / "../Locations_dataset/House_locations_dataset_with_coordinates.csv"
     if not path.exists():

@@ -16,51 +16,67 @@ import os
 import json
 
 def startup(number_of_locations, number_of_vans):
-    """
-    Main function to initialize the routing process.
-    Generates random points, clusters them, and computes routes using various algorithms.
-    :param number_of_locations: Number of locations to generate
-    :param number_of_vans: Number of vans for clustering
-    """
+    metrics = {}
+    pattern = re.compile(r"locations_\d+\.json")
+    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    for filename in os.listdir(controller_path):
+        if pattern.match(filename):
+            os.remove(os.path.join(controller_path, filename))
+
     get_points(number_of_locations)
     return_clusters(number_of_vans)
-
-    pattern = re.compile(r"locations_\d+\.json")
-    controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')    )
-    location_files = [
-        filename for filename in os.listdir(controller_path)
-        if pattern.match(filename)
-    ]
+    location_files = [f"locations_{i}.json" for i in range(number_of_vans)]
 
     for i in range(len(location_files)):
-        waypoints=[]
+        waypoints = []
         waypoints.clear()
         waypoints.append([-71.08811, 42.33862])
-        # with open(f"../locations_{i}.json", "r") as file:
-        file_path = Path(__file__).parent / f"../locations_{i}.json"
-        with file_path.open("r") as file:
+        with open(f"../{location_files[i]}", "r") as file:
             waypoints.extend(json.load(file))
         waypoints.append([-71.08811, 42.33862])
 
         hill_climbing_distance, hill_climbing_time = hill_climbing_order(waypoints, 100, i)
-        print(f'Best distance by hil climbing for Van{i}- {hill_climbing_distance} miles')
-        print(f'Best time by hil climbing for Van{i}- {hill_climbing_time} minutes')
+        metrics[f'Hill Climbing-{i}'] = {
+            'distance': hill_climbing_distance,
+            'time': hill_climbing_time
+        }
+        print(f'Best distance by hill climbing for Van{i}- {hill_climbing_distance} miles')
+        print(f'Best time by hill climbing for Van{i}- {hill_climbing_time} minutes')
 
         simulated_annealing_distance, simulated_annealing_time = simulated_annealing_order(waypoints, 100, i)
+        metrics[f'Simulated Annealing-{i}'] = {
+            'distance': simulated_annealing_distance,
+            'time': simulated_annealing_time
+        }
         print(f'Best distance by simulated annealing for Van{i}- {simulated_annealing_distance} miles')
         print(f'Best time by simulated annealing for Van{i}- {simulated_annealing_time} minutes')
 
         local_beam_distance, local_beam_time = local_beam_search_order(waypoints, 100, i)
+        metrics[f'Local Beam Search-{i}'] = {
+            'distance': local_beam_distance,
+            'time': local_beam_time
+        }
         print(f'Best distance by local beam search for Van{i}- {local_beam_distance} miles')
         print(f'Best time by local beam search for Van{i}- {local_beam_time} minutes')
 
         genetic_algorithm_distance, genetic_algorithm_time = genetic_algorithm_order(waypoints, 100, i)
+        metrics[f'Genetic Algorithm-{i}'] = {
+            'distance': genetic_algorithm_distance,
+            'time': genetic_algorithm_time
+        }
         print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
         print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
 
         a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)  # New A* implementation
         print(f'Best distance by A* search for Van{i}- {a_star_distance} miles')
         print(f'Best time by A* search for Van{i}- {a_star_time} minutes')
+        metrics[f'A Search-{i}'] = {
+            'distance': a_star_distance,
+            'time': a_star_time
+        }
+
+    return metrics
 
 def hill_climbing_order(waypoints, max_iterations, van_number):
     best_order = hillClimbing(
@@ -168,11 +184,11 @@ def a_star_order(waypoints, max_iterations, van_number):
     with output_path.open("w") as file:
         json.dump(best_order_address, file)
 
-    route_generator(best_order, f'A* Search-{van_number}')
+    route_generator(best_order, f'A Search-{van_number}')
 
     Total_route_length = objective(best_order, key)
     Total_commute_time = get_commute_time_for_multiple_points(best_order)
     return [Total_route_length, Total_commute_time]
 
 if __name__ == "__main__":
-    startup(number_of_locations=59, number_of_vans=3)
+    startup(number_of_locations=3, number_of_vans=1)
