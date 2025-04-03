@@ -1,11 +1,11 @@
-from Local_Search.objective_function import objective
+from Local_search.objective_function import objective
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Random_data_generation.get_random_points import get_points
 from K_means.k_means_clustering import return_clusters
-from Local_Search.hill_climbing import hillClimbing
-from Local_Search.simulated_annealing import simulated_annealing
-from Local_Search.local_beam_search import local_beam_search
-from Local_Search.genetic_algorithm import GeneticTSP
+from Local_search.hill_climbing import hillClimbing
+from Local_search.simulated_annealing import simulated_annealing
+from Local_search.local_beam_search import local_beam_search
+from Local_search.genetic_algorithm import GeneticTSP
 from Route_maps_generation.generate_routemap_multiple import route_generator
 from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from config import Sai_Api_Key as key
