@@ -16,6 +16,21 @@ import os
 import json
 
 def startup(number_of_locations, number_of_vans):
+    """
+    This function initializes the routing process by generating random points,
+    clustering them, and then applying various search algorithms to find the best route.
+    It cleans up any existing location files, generates new ones, and computes the best routes
+    using different algorithms such as Hill Climbing, Simulated Annealing, Local Beam Search,
+    Genetic Algorithm, and A* Search. The results are printed and saved to files.
+    :param number_of_locations: Number of locations to generate
+    :param number_of_vans: Number of vans to cluster the locations
+    :return: A dictionary containing the best distances and times for each algorithm and van
+    :rtype: dict
+    :raises Exception: If the number of vans is greater than the number of locations
+    :raises Exception: If the number of vans is less than 1
+    :raises Exception: If the number of locations is less than 1
+    :raises Exception: If the number of locations is greater than 59
+    """
     metrics = {}
     pattern = re.compile(r"locations_\d+\.json")
     controller_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -32,7 +47,9 @@ def startup(number_of_locations, number_of_vans):
         waypoints = []
         waypoints.clear()
         waypoints.append([-71.08811, 42.33862])
-        with open(f"../{location_files[i]}", "r") as file:
+        # with open(f"../{location_files[i]}", "r") as file:
+        output_path = Path(__file__).parent / f"../{location_files[i]}"
+        with output_path.open("r") as file:
             waypoints.extend(json.load(file))
         waypoints.append([-71.08811, 42.33862])
 
@@ -152,7 +169,6 @@ def genetic_algorithm_order(waypoints, max_iterations, van_number):
         elite_size=5,
         mutation_rate=0.01
     )
-
     best_order = ga.run(generations=max_iterations)
 
     best_order_address = []
@@ -191,4 +207,14 @@ def a_star_order(waypoints, max_iterations, van_number):
     return [Total_route_length, Total_commute_time]
 
 if __name__ == "__main__":
-    startup(number_of_locations=3, number_of_vans=1)
+    num_locations = input("Enter number of locations ([1, 59]): ")
+    num_vans = input("Enter number of vans (must be >= number of locations): ")
+    if int(num_vans) > int(num_locations):
+        raise Exception("Number of vans cannot be greater than number of locations")
+    if int(num_vans) < 1:
+        raise Exception("Number of vans cannot be less than 1")
+    if int(num_locations) < 1:
+        raise Exception("Number of locations cannot be less than 1")
+    if int(num_locations) > 59:
+        raise Exception("Number of locations cannot be greater than 59")
+    startup(number_of_locations=int(num_locations), number_of_vans=int(num_vans))
