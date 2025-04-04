@@ -3,8 +3,6 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 from pathlib import Path
 import json
-from pathlib import Path
-
 
 def return_clusters(number_of_clusters):
     """
@@ -14,7 +12,6 @@ def return_clusters(number_of_clusters):
     :param number_of_clusters: Number of clusters to divide the locations into
     :return: None
     """
-
     # with open('../locations.json', 'r') as f:
     path = Path(__file__).parent / "../locations.json"
     with path.open("r") as f:
@@ -69,6 +66,3 @@ def return_clusters(number_of_clusters):
         output_path = Path(__file__).parent / f"../locations_{key}.json"
         with output_path.open("w") as f:
             json.dump(res[key], f, default=lambda x: x.tolist())
-
-# if __name__ == "__main__":
-#     return_clusters(3)
