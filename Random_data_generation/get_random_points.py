@@ -26,5 +26,3 @@ def get_points(number_of_locations):
     output_path = Path(__file__).parent / "../locations.json"
     with output_path.open("w") as file:
         json.dump(waypoints, file)
-if __name__ == "__main__":
-    get_points(35)

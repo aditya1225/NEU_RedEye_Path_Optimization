@@ -1,19 +1,20 @@
 import folium
-import os
 import openrouteservice
 from config import API_KEY as key
 from folium.plugins import AntPath
-import random
-import pandas as pd
 from Route_maps_generation.generate_latitude_longitude import get_coordinates
 from pathlib import Path
 
 def route_generator(waypoints, algorithm_name):
-    '''
-    This generates a routemap for multiple stops.
+    """
+    Generate a route map using OpenRouteService API and Folium.
+    This function takes a list of waypoints, retrieves the route from the OpenRouteService API,
+    and generates an HTML file with the route map.
+    The map includes markers for each waypoint and an animated path showing the route.
+    The map is saved in the Route_maps directory with the name <algorithm_name>_routemap.html.
+    :param algorithm_name: The name of the algorithm used to generate the route.
     :param waypoints: a list of waypoints.
-    :return: a route map in html format.
-    '''
+    """
     client = openrouteservice.Client(key=key)
 
     if isinstance(waypoints[0], str):
@@ -21,7 +22,6 @@ def route_generator(waypoints, algorithm_name):
         for i in range(len(waypoints)):
             temp.append(get_coordinates(waypoints[i]))
         waypoints = temp
-
     print(f"Waypoints: {waypoints}")
 
     try:
@@ -61,19 +61,4 @@ def route_generator(waypoints, algorithm_name):
         output_file = Path(__file__).parent / f"../Route_maps/{algorithm_name}_routemap.html"
         m.save(output_file)
         # m.save(f"../Route_maps/{algorithm_name}_routemap.html")
-        #m.save(f"{algorithm_name}.html")
         print(f"Map saved as {algorithm_name}.html.")
-
-# Below is sample code to test.
-# df = pd.read_csv("../Locations_dataset/House_locations_dataset.csv")
-#
-# num_stops = 3
-# waypoints = []
-#
-# for _ in range(num_stops):
-#     random_index = random.randint(0, len(df) - 1)
-#     random_name = df.iloc[random_index, 0]
-#     waypoints.append(get_coordinates(random_name))
-#
-#
-# route_generator(waypoints)
