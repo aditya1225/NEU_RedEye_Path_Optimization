@@ -1,7 +1,7 @@
 # Northeastern University RedEye Route Optimizer
 
 ## Overview
-This project provides a Flask API to help visualize the efficiency of various local search algorithms for optimizing the route planning of Northeastern's RedEye safety escort service. The current RedEye app has a flaw – the path followed by a given van often takes the longest route first and drops those who live closest to the starting location, Snell Library, towards the backend of the route. The approach taken to solve this problem can be classified as a derivative of the Travelling Salesman Problem. Additonally, the problem is subdivied using k-means clustering. Each local search algorithm is applied within $k$ clusters where $k$ corresponds to the number of vans available. 
+This project provides a Flask API to help visualize the efficiency of various local search algorithms for optimizing the route planning of Northeastern's RedEye safety escort service. The current RedEye app has a flaw – the path followed by a given van often takes the longest route first and drops those who live closest to the starting location, Snell Library, towards the backend of the route. The approach taken to solve this problem can be classified as a derivative of the Traveling Salesman Problem. Additionally, the problem is subdivided using k-means clustering. Each local search algorithm is applied within $k$ clusters where $k$ corresponds to the number of vans available. 
 
 ## Features
 **Local Search**
@@ -26,9 +26,9 @@ ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 
 ## Directory Overview
 - /.idea: ????
-- /Controller: the main application file, controller.py, responsible for running each algorithm's backend
+- /Controller: the main application file, `controller.py`, responsible for running each algorithm's backend
 - /K_means: k-means clustering algorithm
-- /Local_Search: implenmentations for all local search algorithms
+- /Local_Search: implementations for all local search algorithms
 - /Locations_dataset: datasets containing waypoint addresses, one of which includes each longitude and latitude
 - /Parameters: ???
 - /Random_data_generation: generates list of randomly picked waypoints based on number of locations
@@ -37,11 +37,39 @@ ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 - /Route_order: empty folder where each van's route is saved during runtime ()
 - /templates: ???
 - app.py: front end of the application
-- requirements.txt: project dependenices
+- requirements.txt: project dependencies
 - waypoints.json: ???
 
 ## Getting Started
 
+**Prerequisites**
+
+Ensure you have the following installed to run the front and backend application, details regarding version can be found in `requirements.txt`:
+- Flask
+- folium
+- openrouteservice
+- numpy
+- scikit-learn
+- pandas
+- requests
+
+**Installation**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/sentiment-analysis-bert.git
+   
+2. Navigate to the project directory:
+   ```bash
+   cd NEU_RedEye_Path_Optimization
+   
+3. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+
+4. Run the Flask API:
+   ```bash
+   python3 app.py
+
 ## Acknowledgments
 This project uses the following libraries and resources:
-
