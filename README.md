@@ -22,9 +22,23 @@ Given the number of vans, $k$, the waypoints are clustered into $k$ clusters usi
 **Flask Frontend**
 
 Using the Flask framework, a locally-hosted frontend is generated to conveniently allow users to enter input and view the results.
-ADD MORE INFO HERE ABOUT FRONTEND/FLASK??
+ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 
 ## Directory Overview
+- /.idea: ????
+- /Controller: the main application file, controller.py, responsible for running each algorithm's backend
+- /K_means: k-means clustering algorithm
+- /Local_Search: implenmentations for all local search algorithms
+- /Locations_dataset: datasets containing waypoint addresses, one of which includes each longitude and latitude
+- /Parameters: ???
+- /Random_data_generation: generates list of randomly picked waypoints based on number of locations
+- /Route_maps: empty folder where each van's route is saved during runtime (visual map, saved as html file)
+- /Route_maps_generation: ????
+- /Route_order: empty folder where each van's route is saved during runtime ()
+- /templates: ???
+- app.py: front end of the application
+- requirements.txt: project dependenices
+- waypoints.json: ???
 
 ## Getting Started
 
