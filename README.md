@@ -57,7 +57,7 @@ Ensure you have the following installed to run the front and backend application
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/sentiment-analysis-bert.git
+   git clone https://github.com/aditya1225/NEU_RedEye_Path_Optimization.git
    
 2. Navigate to the project directory:
    ```bash
