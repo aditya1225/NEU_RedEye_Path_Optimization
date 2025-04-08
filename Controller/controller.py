@@ -43,55 +43,88 @@ def startup(number_of_locations, number_of_vans):
     return_clusters(number_of_vans)
     location_files = [f"locations_{i}.json" for i in range(number_of_vans)]
 
+    cumulative_metrics = {
+        'Hill Climbing': {'distance': 0, 'time': 0},
+        'Simulated Annealing': {'distance': 0, 'time': 0},
+        'Local Beam Search': {'distance': 0, 'time': 0},
+        'Genetic Algorithm': {'distance': 0, 'time': 0},
+        'A* Search': {'distance': 0, 'time': 0}
+    }
+
     for i in range(len(location_files)):
         waypoints = []
         waypoints.clear()
         waypoints.append([-71.08811, 42.33862])
-        # with open(f"../{location_files[i]}", "r") as file:
         output_path = Path(__file__).parent / f"../{location_files[i]}"
         with output_path.open("r") as file:
             waypoints.extend(json.load(file))
         waypoints.append([-71.08811, 42.33862])
 
+        # Hill Climbing
         hill_climbing_distance, hill_climbing_time = hill_climbing_order(waypoints, 100, i)
-        metrics[f'Hill Climbing-{i}'] = {
-            'distance': hill_climbing_distance,
-            'time': hill_climbing_time
-        }
+        hill_climbing_distance = round(hill_climbing_distance, 2)
+        hill_climbing_time = round(hill_climbing_time, 2)
+        metrics[f'Hill Climbing-{i}'] = {'distance': hill_climbing_distance, 'time': hill_climbing_time}
+        cumulative_metrics['Hill Climbing']['distance'] += hill_climbing_distance
+        cumulative_metrics['Hill Climbing']['time'] += hill_climbing_time
         print(f'Best distance by hill climbing for Van{i}- {hill_climbing_distance} miles')
         print(f'Best time by hill climbing for Van{i}- {hill_climbing_time} minutes')
 
+        # Simulated Annealing
         simulated_annealing_distance, simulated_annealing_time = simulated_annealing_order(waypoints, 100, i)
-        metrics[f'Simulated Annealing-{i}'] = {
-            'distance': simulated_annealing_distance,
-            'time': simulated_annealing_time
-        }
+        simulated_annealing_distance = round(simulated_annealing_distance, 2)
+        simulated_annealing_time = round(simulated_annealing_time, 2)
+        metrics[f'Simulated Annealing-{i}'] = {'distance': simulated_annealing_distance, 'time': simulated_annealing_time}
+        cumulative_metrics['Simulated Annealing']['distance'] += simulated_annealing_distance
+        cumulative_metrics['Simulated Annealing']['time'] += simulated_annealing_time
         print(f'Best distance by simulated annealing for Van{i}- {simulated_annealing_distance} miles')
         print(f'Best time by simulated annealing for Van{i}- {simulated_annealing_time} minutes')
 
+        # Local Beam Search
         local_beam_distance, local_beam_time = local_beam_search_order(waypoints, 100, i)
-        metrics[f'Local Beam Search-{i}'] = {
-            'distance': local_beam_distance,
-            'time': local_beam_time
-        }
+        local_beam_distance = round(local_beam_distance, 2)
+        local_beam_time = round(local_beam_time, 2)
+        metrics[f'Local Beam Search-{i}'] = {'distance': local_beam_distance, 'time': local_beam_time}
+        cumulative_metrics['Local Beam Search']['distance'] += local_beam_distance
+        cumulative_metrics['Local Beam Search']['time'] += local_beam_time
         print(f'Best distance by local beam search for Van{i}- {local_beam_distance} miles')
         print(f'Best time by local beam search for Van{i}- {local_beam_time} minutes')
 
+        # Genetic Algorithm
         genetic_algorithm_distance, genetic_algorithm_time = genetic_algorithm_order(waypoints, 100, i)
-        metrics[f'Genetic Algorithm-{i}'] = {
-            'distance': genetic_algorithm_distance,
-            'time': genetic_algorithm_time
-        }
+        genetic_algorithm_distance = round(genetic_algorithm_distance, 2)
+        genetic_algorithm_time = round(genetic_algorithm_time, 2)
+        metrics[f'Genetic Algorithm-{i}'] = {'distance': genetic_algorithm_distance, 'time': genetic_algorithm_time}
+        cumulative_metrics['Genetic Algorithm']['distance'] += genetic_algorithm_distance
+        cumulative_metrics['Genetic Algorithm']['time'] += genetic_algorithm_time
         print(f'Best distance by genetic algorithm for Van{i}- {genetic_algorithm_distance} miles')
         print(f'Best time by genetic algorithm for Van{i}- {genetic_algorithm_time} minutes')
 
-        a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)  # New A* implementation
+        # A* Search
+        a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)
+        a_star_distance = round(a_star_distance, 2)
+        a_star_time = round(a_star_time, 2)
+        metrics[f'A* Search-{i}'] = {'distance': a_star_distance, 'time': a_star_time}
+        cumulative_metrics['A* Search']['distance'] += a_star_distance
+        cumulative_metrics['A* Search']['time'] += a_star_time
         print(f'Best distance by A* search for Van{i}- {a_star_distance} miles')
         print(f'Best time by A* search for Van{i}- {a_star_time} minutes')
-        metrics[f'A Search-{i}'] = {
-            'distance': a_star_distance,
-            'time': a_star_time
-        }
+
+    # Print cumulative results
+    print("\nCumulative Results Across All Vans:")
+    for algo, values in cumulative_metrics.items():
+        print(f"{algo}: Total Distance = {values['distance']:.2f} miles, Total Time = {values['time']:.2f} minutes")
+
+    # Create and print leaderboards
+    print("\nDistance Leaderboard (Shortest to Longest):")
+    distance_sorted = sorted(cumulative_metrics.items(), key=lambda x: x[1]['distance'])
+    for rank, (algo, values) in enumerate(distance_sorted, 1):
+        print(f"{rank}. {algo}: {values['distance']:.2f} miles")
+
+    print("\nTime Leaderboard (Shortest to Longest):")
+    time_sorted = sorted(cumulative_metrics.items(), key=lambda x: x[1]['time'])
+    for rank, (algo, values) in enumerate(time_sorted, 1):
+        print(f"{rank}. {algo}: {values['time']:.2f} minutes")
 
     return metrics
 

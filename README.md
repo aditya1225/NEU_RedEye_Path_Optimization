@@ -34,7 +34,7 @@ ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 - /Random_data_generation: generates list of randomly picked waypoints based on number of locations
 - /Route_maps: empty folder where each van's route is saved during runtime (visual map, saved as html file)
 - /Route_maps_generation: ????
-- /Route_order: empty folder where each van's route is saved during runtime ()
+- /Route_order: empty folder where each van's route is saved during runtime (list of addresses in order traversed)
 - /templates: ???
 - app.py: front end of the application
 - requirements.txt: project dependencies
