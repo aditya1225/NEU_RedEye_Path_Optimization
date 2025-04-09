@@ -1,13 +1,7 @@
 import heapq
 from math import sqrt
 from Local_Search.objective_function import objective
-from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
-from Route_maps_generation.generate_routemap_multiple import route_generator
-from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 from config import API_KEY_3 as key
-from pathlib import Path
-import json
-
 
 def euclidean_dist(point1, point2):
     """Calculate Euclidean distance between two points"""
@@ -31,16 +25,16 @@ def complete_path(partial_path, remaining_points, end):
     :return: Complete tour visiting all points
     """
     current_path = partial_path.copy()
-    remaining = list(remaining_points)  # Convert to list for ordering
-
+    remaining = list(remaining_points)
+    
     # Greedy nearest-neighbor to add remaining points
     while remaining:
         current = current_path[-1]
         next_point = min(remaining, key=lambda p: euclidean_dist(current, p))
         current_path.append(list(next_point))
         remaining.remove(next_point)
-
-    # Return to end if not already there
+    
+    # Return to end if not there
     if current_path[-1] != end:
         current_path.append(end)
 
@@ -80,7 +74,7 @@ def a_star_search(waypoints, max_iterations=1000):
         if not remaining and current_path[-1] != end:
             new_path = current_path + [end]
             new_g_score = objective(new_path, key)
-            if new_g_score < float('inf'):  # Ensure valid path
+            if new_g_score < float('inf'):
                 # print(f"Optimal waypoints: {new_path}")
                 return new_path
 
@@ -106,29 +100,3 @@ def a_star_search(waypoints, max_iterations=1000):
     # Worst case if no solution found
     print("No solution found, returning original waypoints")
     return waypoints
-
-# Example usage
-# if __name__ == "__main__":
-#     # Load waypoints (ensure first and last are Snell Library)
-#     file_path = Path(__file__).parent / f"../locations_0.json"
-#     with file_path.open("r") as file:
-#         waypoints = json.load(file)
-
-#     temp = []
-#     temp.append([-71.08811, 42.33862])
-#     temp.extend(waypoints)
-#     temp.append([-71.08811, 42.33862])
-#     print(f"Number of locations in temp: {len(temp)}")
-#     best_order = a_star_search(
-#         waypoints=temp,
-#         max_iterations=1000
-#     )
-#     route_generator(best_order, f'A* Search')
-#     print("Best order of waypoints found by A* Search:")
-#     count = 0
-#     for coord in best_order:
-#         count += 1
-#         print(get_address_from_lat_long(coord))
-#     print(f"Total number of locations hit: {count}")
-#     print(f"Best distance : {objective(best_order, key)} miles")
-#     print(f"Total commute time: {get_commute_time_for_multiple_points(best_order)} ")

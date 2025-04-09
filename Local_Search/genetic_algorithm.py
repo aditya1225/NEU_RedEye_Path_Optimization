@@ -1,12 +1,19 @@
 import random
-from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from config import Sai_Api_Key as key
-from Route_maps_generation.generate_routemap_multiple import route_generator
-import json
 from Local_Search.objective_function import objective
-from Route_maps_generation.get_address_from_lat_long import get_address_from_lat_long
 
 class GeneticTSP:
+    """
+    Genetic Algorithm for Traveling Salesman Problem (TSP).
+    This class implements a genetic algorithm to find the shortest route
+    visiting all waypoints, with fixed start and end points.
+    The algorithm uses a population-based approach with selection,
+    crossover, and mutation to evolve solutions over generations.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param pop_size: Population size for genetic algorithm
+    :param elite_size: Number of elite individuals to carry over to the next generation
+    :param mutation_rate: Probability of mutation for each individual
+    """
     def __init__(self, waypoints, pop_size=50, elite_size=10, mutation_rate=0.01):
         self.waypoints = waypoints
         self.pop_size = pop_size
@@ -51,7 +58,6 @@ class GeneticTSP:
 
         child[0] = parent1[0]
         child[-1] = parent1[-1]
-
         child[start:end + 1] = parent1[start:end + 1]
 
         remaining = [gene for gene in parent2[1:-1] if gene not in child]
@@ -98,8 +104,6 @@ class GeneticTSP:
             if current_best[1] < best_distance:
                 best_distance = current_best[1]
                 best_individual = current_best[0]
-
             #print(f"Generation {gen + 1}: Best Distance = {best_distance / 1000:.2f} km")
-
         return best_individual
 

@@ -1,6 +1,12 @@
 import pandas as pd
 from pathlib import Path
+
 def get_address_from_lat_long(lat_long):
+    """
+    Get the address of a given latitude and longitude from a CSV file.
+    :param lat_long: Tuple of latitude and longitude
+    :return: Address as a string
+    """
     path = Path(__file__).parent / "../Locations_dataset/House_locations_dataset_with_coordinates.csv"
     if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
@@ -11,5 +17,4 @@ def get_address_from_lat_long(lat_long):
             origin_index = i
             break
     address = df.iloc[origin_index][0]
-
     return address

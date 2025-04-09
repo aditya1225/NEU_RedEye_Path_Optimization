@@ -9,5 +9,3 @@ def get_points(number_of_locations):
         waypoints.append((df.iloc[num][1], df.iloc[num][2]))
     with open("../locations.json", "w") as file:
         json.dump(waypoints, file)
-if __name__ == "__main__":
-    get_points(35)

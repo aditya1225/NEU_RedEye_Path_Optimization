@@ -17,8 +17,12 @@ def generate_maps():
                 os.remove(file_path)
         except Exception as e:
             print(f"Error deleting file {file_path}: {e}")
-    metrics = startup(number_of_locations=num_students, number_of_vans=num_vans)
+    
+    metrics, cumulative_metrics, distance_sorted, time_sorted = startup(number_of_locations=num_students, number_of_vans=num_vans)
     session['metrics'] = metrics
+    session['cumulative_metrics'] = cumulative_metrics
+    session['distance_sorted'] = distance_sorted
+    session['time_sorted'] = time_sorted
     return redirect('/')
 
 @app.route('/Route_maps/<path:filename>')
@@ -29,7 +33,10 @@ def send_map(filename):
 def hello_world():
     map_files = os.listdir(os.path.join('Route_maps'))
     metrics = session.get('metrics', {})
-    return render_template('maps_display.html', map_files=map_files, metrics=metrics)
+    cumulative_metrics = session.get('cumulative_metrics', {})
+    distance_sorted = session.get('distance_sorted', {})
+    time_sorted = session.get('time_sorted', {})
+    return render_template('maps_display.html', map_files=map_files, metrics=metrics, cumulative_metrics=cumulative_metrics, distance_sorted=distance_sorted, time_sorted=time_sorted)
 
 if __name__ == '__main__':
     app.run()
