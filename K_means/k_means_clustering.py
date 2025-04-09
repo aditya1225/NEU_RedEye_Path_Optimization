@@ -2,12 +2,6 @@ import numpy as np
 from sklearn.cluster import KMeans
 from collections import defaultdict
 import json
-<<<<<<< Updated upstream
-
-
-def return_clusters(number_of_clusters):
-    with open('../locations.json', 'r') as f:
-=======
 
 def return_clusters(number_of_clusters):
     """
@@ -20,7 +14,6 @@ def return_clusters(number_of_clusters):
     # with open('../locations.json', 'r') as f:
     path = Path(__file__).parent / "../locations.json"
     with path.open("r") as f:
->>>>>>> Stashed changes
         locations = json.load(f)
 
     X = np.array(locations)
@@ -68,11 +61,5 @@ def return_clusters(number_of_clusters):
         res[labels[i]].append(point)
 
     for key in res.keys():
-<<<<<<< Updated upstream
         with open(f"../locations_{key}.json", 'w') as f:
-=======
-        # with open(f"../locations_{key}.json", 'w') as f:
-        output_path = Path(__file__).parent / f"../locations_{key}.json"
-        with output_path.open("w") as f:
->>>>>>> Stashed changes
             json.dump(res[key], f, default=lambda x: x.tolist())
