@@ -1,7 +1,5 @@
 import logging
 from Local_Search.objective_function import objective
-
-# Set up logging
 logging.basicConfig(level=logging.INFO)
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Random_data_generation.get_random_points import get_points
@@ -43,7 +41,7 @@ def startup(number_of_locations, number_of_vans):
         if pattern.match(filename):
             os.remove(os.path.join(controller_path, filename))
 
-    get_points(number_of_locations)
+    get_points(number_of_locations,number_of_vans)
     return_clusters(number_of_vans)
     location_files = [f"locations_{i}.json" for i in range(number_of_vans)]
 

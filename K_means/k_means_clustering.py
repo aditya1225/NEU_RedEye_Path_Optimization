@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from collections import defaultdict
 import json
+from pathlib import Path 
 
 def return_clusters(number_of_clusters):
     """
@@ -11,7 +12,6 @@ def return_clusters(number_of_clusters):
     :param number_of_clusters: Number of clusters to divide the locations into
     :return: None
     """
-    # with open('../locations.json', 'r') as f:
     path = Path(__file__).parent / "../locations.json"
     with path.open("r") as f:
         locations = json.load(f)
@@ -54,7 +54,6 @@ def return_clusters(number_of_clusters):
             labels[pi] = cluster_idx
         cluster_points = X[point_indices]
         balanced_centroids.append(cluster_points.mean(axis=0))
-
 
     res = defaultdict(list)
     for i, point in enumerate(X):
