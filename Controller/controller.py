@@ -104,7 +104,7 @@ def startup(number_of_locations, number_of_vans):
         a_star_distance, a_star_time = a_star_order(waypoints, 1000, i)
         a_star_distance = round(a_star_distance, 2)
         a_star_time = round(a_star_time, 2)
-        metrics[f'A* Search-{i}'] = {'distance': a_star_distance, 'time': a_star_time}
+        metrics[f'A Search-{i}'] = {'distance': a_star_distance, 'time': a_star_time}
         cumulative_metrics['A* Search']['distance'] += a_star_distance
         cumulative_metrics['A* Search']['time'] += a_star_time
         print(f'Best distance by A* search for Van{i}- {a_star_distance} miles')
@@ -126,7 +126,7 @@ def startup(number_of_locations, number_of_vans):
     for rank, (algo, values) in enumerate(time_sorted, 1):
         print(f"{rank}. {algo}: {values['time']:.2f} minutes")
 
-    return metrics
+    return metrics, cumulative_metrics, distance_sorted, time_sorted
 
 def hill_climbing_order(waypoints, max_iterations, van_number):
     best_order = hillClimbing(
