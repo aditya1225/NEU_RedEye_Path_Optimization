@@ -34,11 +34,12 @@ def send_map(filename):
 @app.route('/show-maps')
 def show_maps():
     map_files = os.listdir(os.path.join('Route_maps'))
+    sorted_map_files = sorted(map_files, key=lambda x: int(x.split('-')[1].split('_')[0]))
     metrics = session.get('metrics', {})
     cumulative_metrics = session.get('cumulative_metrics', {})
     distance_sorted = session.get('distance_sorted', {})
     time_sorted = session.get('time_sorted', {})
-    return render_template('maps_display.html', map_files=map_files, metrics=metrics, cumulative_metrics=cumulative_metrics, distance_sorted=distance_sorted, time_sorted=time_sorted)
+    return render_template('maps_display.html', map_files=sorted_map_files, metrics=metrics, cumulative_metrics=cumulative_metrics, distance_sorted=distance_sorted, time_sorted=time_sorted)
 
 @app.route('/')
 def hello_world():
