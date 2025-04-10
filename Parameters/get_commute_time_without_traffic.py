@@ -13,8 +13,6 @@ def get_commute_time_without_traffic(origin, destination):
     :raises Exception: If the API response is not as expected
     """
     client = openrouteservice.Client(key=key)
-    retries = 3
-    delay = 5  # seconds
     time.sleep(2)
     origin_coords = origin
     destination_coords = destination

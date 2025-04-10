@@ -473,7 +473,7 @@
 </head>
 <body>
     <h1>Generate Route Maps</h1>
-    
+
     <form action="/generate_maps" method="post">
         <div>
             <label for="num_vans">Number of Vans:</label>
@@ -488,7 +488,7 @@
 
     <div class="leaderboard-panel">
         <div class="leaderboard-panel-header">Route Performance Metrics</div>
-        
+
         <div class="results-grid">
             {% for algo, values in cumulative_metrics.items() %}
                 <div class="result-card">
@@ -506,7 +506,7 @@
                 </div>
             {% endfor %}
         </div>
-        
+
         <div class="leaderboards-container">
             <div class="leaderboard">
                 <h3 class="leaderboard-title">Distance Rankings</h3>
@@ -531,7 +531,7 @@
                     {% endfor %}
                 </div>
             </div>
-            
+
             <div class="leaderboard">
                 <h3 class="leaderboard-title">Time Rankings</h3>
                 <div class="leaderboard-header">

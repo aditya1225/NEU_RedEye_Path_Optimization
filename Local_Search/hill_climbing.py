@@ -3,11 +3,13 @@ import pandas as pd
 from config import API_KEY as key
 from Local_Search.objective_function import objective
 
-
-
-
-
 def hillClimbing(waypoints, max_iterations=100):
+    """
+    Hill Climbing algorithm for TSP: finds a tour visiting all waypoints.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param max_iterations: Maximum number of iterations to prevent infinite loops
+    :return: List of waypoints visiting all points
+    """
     best = waypoints.copy()
     min_dist = objective(best, key)
     iterations_without_improvement = 0

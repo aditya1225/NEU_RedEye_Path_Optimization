@@ -2,7 +2,6 @@ import random
 from config import API_KEY_3 as key
 from Local_Search.objective_function import objective
 
-
 def generate_neighbors(solution):
     """Generate all possible neighbors by swapping middle points"""
     neighbors = []
@@ -17,7 +16,13 @@ def generate_neighbors(solution):
     return neighbors
 
 def local_beam_search(waypoints, k=5, max_iterations=20):
-    """Local Beam Search implementation with fixed start/end points"""
+    """
+    Local Beam Search for TSP: finds a tour visiting all waypoints.
+    :param waypoints: List of waypoints including start and end points (start = end for TSP)
+    :param k: Number of beams (solutions) to maintain
+    :param max_iterations: Maximum number of iterations to prevent infinite loops
+    :return: List of waypoints visiting all points
+    """
     # Initialize beam with k copies of initial solution
     beam = [waypoints.copy() for _ in range(k)]
     best_solution = waypoints.copy()

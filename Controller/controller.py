@@ -1,6 +1,4 @@
-import logging
 from Local_Search.objective_function import objective
-logging.basicConfig(level=logging.INFO)
 from Parameters.get_commute_time_without_traffic import get_commute_time_for_multiple_points
 from Random_data_generation.get_random_points import get_points
 from K_means.k_means_clustering import return_clusters
@@ -41,7 +39,7 @@ def startup(number_of_locations, number_of_vans):
         if pattern.match(filename):
             os.remove(os.path.join(controller_path, filename))
 
-    get_points(number_of_locations,number_of_vans)
+    get_points(number_of_locations)
     return_clusters(number_of_vans)
     location_files = [f"locations_{i}.json" for i in range(number_of_vans)]
 
@@ -127,10 +125,7 @@ def startup(number_of_locations, number_of_vans):
     time_sorted = sorted(cumulative_metrics.items(), key=lambda x: x[1]['time'])
     for rank, (algo, values) in enumerate(time_sorted, 1):
         print(f"{rank}. {algo}: {values['time']:.2f} minutes")
-    print("Cumm_METRICS IS THIS = ")
-    print(cumulative_metrics)
-    distance_sorted = sorted(cumulative_metrics.items(), key=lambda x: x[1]['distance'])
-    time_sorted = sorted(cumulative_metrics.items(), key=lambda x: x[1]['time'])
+
     return metrics, cumulative_metrics, distance_sorted, time_sorted
 
 def hill_climbing_order(waypoints, max_iterations, van_number):
