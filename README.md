@@ -35,7 +35,7 @@ ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 - /Route_maps: empty folder where each van's route is saved during runtime (visual map, saved as html file)
 - /Route_maps_generation: ????
 - /Route_order: empty folder where each van's route is saved during runtime (list of addresses in order traversed)
-- /templates: ???
+- /templates: folder to store all html files for the front end.
 - app.py: front end of the application
 - requirements.txt: project dependencies
 - waypoints.json: ???
