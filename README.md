@@ -25,20 +25,20 @@ Using the Flask framework, a locally-hosted frontend is generated to convenientl
 ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
 
 ## Directory Overview
-- /.idea: ????
+- /.idea: Flask generated file.
 - /Controller: the main application file, `controller.py`, responsible for running each algorithm's backend
 - /K_means: k-means clustering algorithm
 - /Local_Search: implementations for all local search algorithms
 - /Locations_dataset: datasets containing waypoint addresses, one of which includes each longitude and latitude
-- /Parameters: ???
+- /Parameters: Has functions to calculte time and generate waypoints.
 - /Random_data_generation: generates list of randomly picked waypoints based on number of locations
 - /Route_maps: empty folder where each van's route is saved during runtime (visual map, saved as html file)
-- /Route_maps_generation: ????
+- /Route_maps_generation: The helper functions used to build this project.
 - /Route_order: empty folder where each van's route is saved during runtime (list of addresses in order traversed)
 - /templates: folder to store all html files for the front end.
 - app.py: front end of the application
 - requirements.txt: project dependencies
-- waypoints.json: ???
+  
 
 ## Getting Started
 
