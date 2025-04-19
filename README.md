@@ -11,7 +11,7 @@ There are 5 search algorithms implemented to address the RedEye problem:
 - Local beam serach
 - Simulated annealing
 - Genetic algorithm
-- A*
+- A* 
 
 Whenever the code is executed, all 5 algorithms are run so their corresponding efficiencies can be viewed and compared amongst each other.
 
@@ -21,8 +21,7 @@ Given the number of vans, $k$, the waypoints are clustered into $k$ clusters usi
 
 **Flask Frontend**
 
-Using the Flask framework, a locally-hosted frontend is generated to conveniently allow users to enter input and view the results.
-ADD MORE INFO HERE ABOUT FRONTEND/HOW FLASK WORKS??
+Using the Flask framework, a locally-hosted frontend is generated to conveniently allow users to enter input and view the results. Here it takes care of the entire functionality of the web app. It takes input from the html file and passes it on to the controller and then recieves the output from the controller and pasees it on to the front end.
 
 ## Directory Overview
 - /.idea: Flask generated file.
